@@ -22,6 +22,11 @@ const routes = [
     name: 'test',
     component: () => import('@/views/Test.vue'),
   },
+  {
+    path: '/map',
+    name: 'Map',
+    component: () => import('@/views/superMap'),
+  },
 ];
 
 const router = createRouter({
