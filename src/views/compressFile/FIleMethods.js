@@ -240,7 +240,8 @@ const compressAccurately = async function (file, config = {}) {
    *    算法流程：
    *    quality表示压缩质量值，lastQuality表示上一次压缩质量值，x表示迭代次数，
    *    0.5 ** (x + 1) 是调整幅度
-   *    ±表示根据压缩情况上下调整quality值
+   *    ±表示根据压缩情况上下调整quality值,当压缩结果值大于目标值时，此时为“-”，降低压缩质量，
+   *    当压缩结果值小于目标值时，此时为“+”,提高压缩质量。
    *    quality = lastQuality±0.5 ** (x + 1)
    */
   const imageQualityBlocks = [0.3, 0.5, 0.7];
@@ -285,10 +286,12 @@ const compressAccurately = async function (file, config = {}) {
       }
       break;
     }
+    // 当压缩结果值大于目标值时，此时为“-”，降低压缩质量
     if (resultSize.max < CalculationSize) {
       tempDataURLs[1] = compressDataURL;
       imageQuality -= 0.5 ** (x + 1);
     } else if (resultSize.min > CalculationSize) {
+      // 当压缩结果值小于目标值时，此时为“+”,提高压缩质量
       tempDataURLs[0] = compressDataURL;
       imageQuality += 0.5 ** (x + 1);
     } else {
