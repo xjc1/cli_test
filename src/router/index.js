@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/oval',
     name: 'Oval',
-    component: ()=>import('@/views/oval/index.vue'),
+    component: () => import('@/views/oval/index.vue'),
   },
   {
     path: '/compressFile',
@@ -21,6 +21,21 @@ const routes = [
     path: '/test',
     name: 'test',
     component: () => import('@/views/Test.vue'),
+  },
+  {
+    path: '/map',
+    name: 'map',
+    component: () => import('@/views/map/index.vue'),
+  },
+  {
+    path: '/location',
+    name: 'location',
+    component: () => import('@/views/map/Location.vue'),
+  },
+  {
+    path: '/bMap',
+    name: 'bMap',
+    component: () => import('@/views/map/Bmap.vue'),
   },
 ];
 
