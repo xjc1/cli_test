@@ -22,6 +22,11 @@ const routes = [
     name: 'test',
     component: () => import('@/views/Test.vue'),
   },
+  {
+    path:'/tableMerge',
+    name:'tableMerge',
+    component:()=>import('@/views/tableMerge/index.vue'),
+  }
 ];
 
 const router = createRouter({

@@ -10,6 +10,7 @@
   "dependencies": {
     "@antv/x6": "^2.15.3",
     "core-js": "^3.6.5",
+    "element-plus": "^2.8.8",
     "jsplumb": "^2.15.6",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
