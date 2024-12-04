@@ -172,6 +172,14 @@ const canvastoDataURL = async function (canvas, quality, type) {
   return canvas.toDataURL(type, quality);
 };
 
+// 计算压缩率
+function calculateCompressionRate(originalSize, compressedSize) {
+  if (originalSize === 0) {
+    return 0;
+  }
+  return ((originalSize - compressedSize) / originalSize).toFixed(2);
+}
+
 const compressAccurately = async function (file, config = {}) {
   if (!(file instanceof Blob)) {
     throw new Error(
@@ -219,21 +227,47 @@ const compressAccurately = async function (file, config = {}) {
    * 这里为了提高性能，直接通过这个比值来计算出blob.size
    */
   const proportion = 0.75;
-  let imageQuality = 0.5;
   let compressDataURL;
   const tempDataURLs = [null, null];
+  /** *
+   *    根据压缩率获取压缩质量参数的初始值，压缩率大于70% 则质量参数为0.3，小于30% 则质量参数为0.7 否则为0.5
+   *    然后通过迭代逼近算法来获取最精确的压缩质量参数
+   *    迭代逼近算法思想：
+   *    通过递减调整幅度逐步优化图片压缩质量。初期通过适当幅度调整，
+   *    快速降低图片体积；随着调整的深入，逐步减少调整幅度，防止过度压缩造成的质量损失。
+   *    通过逐步微调，逐步逼近最优解，但避免剧烈变化，防止错过最优解
+   *    这种渐进式调整策略既能保持图片的清晰度，又能有效压缩文件大小，提高压缩效率
+   *    算法流程：
+   *    quality表示压缩质量值，lastQuality表示上一次压缩质量值，x表示迭代次数，
+   *    0.5 ** (x + 1) 是调整幅度
+   *    ±表示根据压缩情况上下调整quality值,当压缩结果值大于目标值时，此时为“-”，降低压缩质量，
+   *    当压缩结果值小于目标值时，此时为“+”,提高压缩质量。
+   *    quality = lastQuality±0.5 ** (x + 1)
+   */
+  const imageQualityBlocks = [0.3, 0.5, 0.7];
+  const compressionRate = calculateCompressionRate(originalSize, config.size * 1024);
+  let imageQuality = (function () {
+    if (compressionRate >= imageQualityBlocks[2]) {
+      return imageQualityBlocks[0];
+    }
+    if (compressionRate <= imageQualityBlocks[0]) {
+      return imageQualityBlocks[2];
+    }
+    return imageQualityBlocks[1];
+  }());
   /**
    * HTMLCanvasElement.toBlob()以及HTMLCanvasElement.toDataURL()压缩参数
    * 的最小细粒度为0.01，而2的7次方为128，即只要循环7次，则会覆盖所有可能性
    */
-  for (let x = 1; x <= 7; x++) {
+  for (let x = 2; x <= 7; x++) {
     console.group();
-    console.log('循环次数：', x);
+    console.log('循环次数：', x - 1);
     console.log('当前图片质量', imageQuality);
     compressDataURL = await canvastoDataURL(canvas, imageQuality, mime);
     const CalculationSize = compressDataURL.length * proportion;
     console.log('当前图片尺寸', CalculationSize);
-    console.log('当前压缩率', CalculationSize / originalSize);
+    // eslint-disable-next-line no-mixed-operators
+    console.log('当前压缩率', ((originalSize - CalculationSize) / originalSize * 100).toFixed(2));
     console.log('与目标体积偏差', CalculationSize / (config.size * 1024) - 1);
     console.groupEnd();
     // 如果到循环第七次还没有达到精确度的值，那说明该图片不能达到到此精确度要求
@@ -252,10 +286,12 @@ const compressAccurately = async function (file, config = {}) {
       }
       break;
     }
+    // 当压缩结果值大于目标值时，此时为“-”，降低压缩质量
     if (resultSize.max < CalculationSize) {
       tempDataURLs[1] = compressDataURL;
       imageQuality -= 0.5 ** (x + 1);
     } else if (resultSize.min > CalculationSize) {
+      // 当压缩结果值小于目标值时，此时为“+”,提高压缩质量
       tempDataURLs[0] = compressDataURL;
       imageQuality += 0.5 ** (x + 1);
     } else {
