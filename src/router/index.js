@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/oval',
     name: 'Oval',
-    component: ()=>import('@/views/oval/index.vue'),
+    component: () => import('@/views/oval/index.vue'),
   },
   {
     path: '/compressFile',
@@ -23,10 +23,10 @@ const routes = [
     component: () => import('@/views/Test.vue'),
   },
   {
-    path:'/tableMerge',
-    name:'tableMerge',
-    component:()=>import('@/views/tableMerge/index.vue'),
-  }
+    path: '/tableMerge',
+    name: 'tableMerge',
+    component: () => import('@/views/tableMerge/index.vue'),
+  },
 ];
 
 const router = createRouter({
