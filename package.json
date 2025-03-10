@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@antv/x6": "^2.15.3",
+    "@huolala-tech/page-spy-plugin-ospy": "^2.1.10",
     "core-js": "^3.6.5",
     "element-plus": "^2.8.8",
     "jsplumb": "^2.15.6",

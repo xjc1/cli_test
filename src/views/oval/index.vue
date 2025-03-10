@@ -15,8 +15,8 @@ onMounted(() => {
 function init() {
   const container = document.getElementsByClassName('ellipse-container')[0];
   console.log('container', container);
-  const a = 150; // 椭圆的长半轴
-  const b = 100; // 椭圆的短半轴
+  const a = 120; // 椭圆的长半轴
+  const b = 80 ?? 0; // 椭圆的短半轴
   const elementsCount = 6; // 元素数量
 
   for (let i = 0; i < elementsCount; i++) {
@@ -34,7 +34,7 @@ function init() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .oval {
   .ellipse-container {
     position: relative;
