@@ -27,6 +27,11 @@ const routes = [
     name: 'tableMerge',
     component: () => import('@/views/tableMerge/index.vue'),
   },
+  {
+    path: '/eMap',
+    name: 'eMap',
+    component: () => import('@/views/scMap/EMap.vue'),
+  },
 ];
 
 const router = createRouter({
