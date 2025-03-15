@@ -61,7 +61,7 @@ const option = {
     itemStyle: { // 设置地图板块配置选项
       color: '#7497D7',
       // 图形的描边颜色
-      borderColor: '#fff',
+      borderColor: '#7497D7',
       // 描边线宽。
       borderWidth: 1,
       // 柱条的描边类型。
