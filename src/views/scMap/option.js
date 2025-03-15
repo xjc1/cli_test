@@ -11,6 +11,9 @@ const series = [
       show: true,
       color: '#00277B',
       fontSize: 12,
+      formatter: (params = {}) => {
+        return params.data?.properties?.fullname || params.name;
+      },
     },
     aspectScale: 0.75,
     layoutCenter: ['49%', '50%'], // 地图位置
@@ -19,7 +22,7 @@ const series = [
       borderColor: '#c4d4ff',
       borderWidth: 1,
       areaColor: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-        { offset: 0, color: '#dde4fd' },
+        { offset: 0, color: '#ffffff' },
         { offset: 1, color: '#ffffff' },
         // { offset: 1, color: '#dde4fd' },
       ]),
@@ -29,6 +32,7 @@ const series = [
         show: true,
         color: '#fff',
         fontSize: 12,
+        fontWeight: 400,
       },
       // 鼠标放上去后，样式改变
       itemStyle: {

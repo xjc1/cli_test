@@ -26,8 +26,12 @@ echarts.registerMap('sichuan', sichuanJson); // 注册绘制四川省地图
 const chartRef = ref(null);
 onMounted(() => {
   chartRef.value = echarts.init(document.getElementById(props.id));//实力化对象
-  // const {features} = sichuanJson;
-  // option.series[0].data = features[1];
+  const {features} = sichuanJson;
+  option.series[0].data =  features.map(feature => ({
+    name: feature.properties.name, // 绑定 name 字段
+    value: feature.properties.code, // value
+    properties: feature.properties // 绑定 properties
+  }));
   // option.series[1].data = features[2];
   // option.series[2].data = features[3];
   chartRef.value?.setOption(option);
