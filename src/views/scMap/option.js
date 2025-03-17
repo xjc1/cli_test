@@ -23,7 +23,7 @@ const series = [
       borderWidth: 1,
       areaColor: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
         { offset: 0, color: '#ffffff' },
-        { offset: 1, color: '#ffffff' },
+        { offset: 1, color: '#EFF5FF' },
         // { offset: 1, color: '#dde4fd' },
       ]),
     },
