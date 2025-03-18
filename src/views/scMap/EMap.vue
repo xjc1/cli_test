@@ -9,6 +9,7 @@
 <script setup>
 import * as echarts from 'echarts';// 引入echarts
 import sichuanJson from './sichuan';
+import province from './province';
 import option from './option';
 import {ref, onMounted,watch} from 'vue';
 const props = defineProps({
@@ -26,7 +27,7 @@ echarts.registerMap('sichuan', sichuanJson); // 注册绘制四川省地图
 const chartRef = ref(null);
 onMounted(() => {
   chartRef.value = echarts.init(document.getElementById(props.id));//实力化对象
-  const {features} = sichuanJson;
+  const {features} = province;
   option.series[0].data =  features.map(feature => ({
     name: feature.properties.name, // 绑定 name 字段
     value: feature.properties.code, // value

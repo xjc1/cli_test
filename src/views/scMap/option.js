@@ -11,21 +11,15 @@ const series = [
       show: true,
       color: '#00277B',
       fontSize: 12,
-      formatter: (params = {}) => {
-        return params.data?.properties?.fullname || params.name;
-      },
+      formatter: (params = {}) => params.data?.properties?.fullname || params.name,
     },
     aspectScale: 0.75,
     layoutCenter: ['49%', '50%'], // 地图位置
     layoutSize: '100%',
     itemStyle: {
-      borderColor: '#c4d4ff',
+      borderColor: '#7ea7ff',
       borderWidth: 1,
-      areaColor: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-        { offset: 0, color: '#ffffff' },
-        { offset: 1, color: '#EFF5FF' },
-        // { offset: 1, color: '#dde4fd' },
-      ]),
+      areaColor: 'trasparent',
     },
     emphasis: {
       label: {
@@ -62,16 +56,14 @@ const option = {
     //   borderRadius: 0,
     //   trigger: 'item',
     // },
-    itemStyle: { // 设置地图板块配置选项
-      color: '#7497D7',
-      // 图形的描边颜色
-      borderColor: '#7497D7',
-      // 描边线宽。
+    itemStyle: {
+      borderColor: '#c4d4ff',
       borderWidth: 1,
-      // 柱条的描边类型。
-      borderType: 'solid',
-      shadowColor: '#7497D7',
-      shadowBlur: 15,
+      areaColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+        { offset: 0, color: 'red' },
+        { offset: 1, color: 'black' },
+        // { offset: 1, color: '#dde4fd' },
+      ]),
     },
     emphasis: {
       disabled: true,
